@@ -18,10 +18,10 @@
 2. **退出 OneDrive**：如果你的系统开启了 OneDrive 文件夹备份，请在右下角任务栏右键 OneDrive 图标，**暂停同步**或在设置中**停止备份**这几个核心文件夹。
 
 ### 第二步：执行脚本
-1. 将脚本代码保存为 `MoveFolders.ps1`（务必以**带有 BOM 的 UTF-8** 编码保存）。
+1. 将脚本代码保存为 `userdirchanger.ps1`（务必以**带有 BOM 的 UTF-8** 编码保存）。
 2. 点击 Windows 开始菜单，搜索 `PowerShell`。
 3. 选择 **“以管理员身份运行”**。
-4. 在命令行中输入脚本所在路径并回车运行（例如：`C:\Users\Admin\Desktop\MoveFolders.ps1`）。
+4. 在命令行中输入脚本所在路径并回车运行（例如：`C:\Users\Admin\Desktop\userdirchanger.ps1`）。
 5. 脚本运行结束后，Windows 资源管理器会自动重启，你的桌面会闪烁一下，此时迁移即刻生效。
 
 ---

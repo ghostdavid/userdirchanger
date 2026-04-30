@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     安全、无损地将 Windows 11 用户核心文件夹迁移至 D 盘。
 .NOTES

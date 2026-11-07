@@ -1,0 +1,11 @@
+# Local test and comparison artifacts
+__ui_demo__/
+*-output.txt
+gemini-old-script.txt
+
+# Runtime logs
+KnownFolderMigration/
+*.log
+
+# Local release binaries (published manually)
+release/

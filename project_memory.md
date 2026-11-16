@@ -17,9 +17,9 @@
 - `Run-UserFolderMigration.cmd`：三文件源码运行方式的基本入口；支持首个参数 `--preview`，高级参数应通过 PowerShell 入口传入。
 - `tools/UserDirChangerLauncher.cs`：单文件 EXE 启动器；包含程序集版本、控制台标题、内嵌资源释放、PowerShell 查找、参数引用与转发、临时目录清理。
 - `Build-UserDirChangerExe.ps1`：正式构建脚本；将两个 PS1 作为资源嵌入 EXE，默认输出到 `release/UserDirChanger.exe`。
-- `README.md`：面向用户的介绍、准备、预览、迁移、合并、日志恢复、构建和限制说明，不记录内部记忆维护规则。
-- `docs/images/userdirchanger-preview.png`：README 的预览模式界面截图；公开图片仅保留脱敏示例账户和路径，原始截图及一次性采集工具不纳入版本控制。
-- `release/UserDirChanger.exe`：本地手动发布的构建产物；`.gitignore` 忽略整个 `release/`，不能凭既有文件判断最新源码已经构建。
+- `README.md`：面向用户的介绍、准备、源码运行、预览、迁移、合并、日志恢复和限制说明。
+- `docs/images/userdirchanger-preview.png`：README 的预览模式界面截图；本地界面示例及一次性采集工具使用已忽略的 `__ui_demo__/`。原始截图可能包含账户名、真实路径或文件名，公开图片仅使用脱敏示例，原始截图及采集工具不纳入版本控制。
+- `release/UserDirChanger.exe`：本地手动发布的单文件 EXE，位于已忽略的 `release/`；内嵌资源 `UserDirChanger.Start.ps1` 和 `UserDirChanger.Move.ps1` 分别对应 `Start-UserFolderMigration.ps1` 和 `Move-UserFolders.ps1`。当前文件的版本元数据为 `2026.11.16`，两个内嵌脚本与对应源文件的 SHA-256 已静态核对一致；未启动 EXE 或验证真实迁移，源码变化后须重新核对。
 - `.gitignore`：忽略本地测试与比较产物、运行日志、本地发布文件等；忽略规则不等同于清理已有文件。
 - `.gitattributes`：规定文本换行及 PNG、EXE 的二进制处理方式，其中 CMD 使用 CRLF。
 
@@ -30,8 +30,7 @@
 - **合并策略差异**：EXE 和 `Start-UserFolderMigration.ps1` 固定传入 `AllowTargetMerge = $true`，允许非空目标在警告后合并；直接调用迁移引擎时默认拒绝非空目标，必须显式指定 `-AllowTargetMerge`。任何方式都不会预先清空目标。
 - **同名文件与完整性**：复制界面由 Windows 提供，替换、跳过或保留两个文件由用户处理；总确认不等于同意覆盖所有文件。当前实现只验证重定向后的系统路径及目标目录存在，不做逐文件哈希或复制完整性证明，跳过文件需自行核对。
 - **预览边界**：EXE 的 `--preview` 转为 PowerShell 的 `-Preview`，中文入口再向引擎传入 `WhatIf`；直接调用引擎可使用 `-WhatIf`。预览执行读取和安全检查，但在复制、注册表备份和日志创建之前返回，不能证明实际复制或重定向成功。
-- **日志与失败恢复**：有待处理项目且确认实际迁移后，在 `%LOCALAPPDATA%\KnownFolderMigration\<时间戳>\` 写入 `migration.log`、`migration-plan.json` 和 `User-Shell-Folders-before.reg`。单项失败会停止后续处理，已完成的重定向不自动回滚；备份和清单仅供排查恢复，不是一键回滚机制。
+- **日志与失败恢复**：有待处理项目且确认实际迁移后，在 `%LOCALAPPDATA%\KnownFolderMigration\<时间戳>\` 写入 `migration.log`、`migration-plan.json` 和 `User-Shell-Folders-before.reg`。日志和路径清单可能包含账户名、真实路径或文件名。单项失败会停止后续处理，已完成的重定向不自动回滚；备份和清单仅供排查恢复，不是一键回滚机制。
 - **运行时限制**：项目文档以 Windows 11 和 Windows PowerShell 5.1 为运行环境。EXE 不修改系统全局执行策略，而是对子进程使用 `-ExecutionPolicy Bypass`；不得将此描述为永久更改系统策略。
 - **脚本编码**：含中文的 PS1 文件必须保留 UTF-8 BOM。已确认 Windows PowerShell 5.1 会将无 BOM 的 UTF-8 启动脚本按本地 ANSI 读取，造成乱码和解析失败；文本编辑后应核对 BOM，并通过最终 EXE 预览验证实际释放的脚本。
 - **构建与验证限制**：源码修改后需通过正式构建脚本同步 EXE；构建成功不等于迁移功能验证。项目没有自动化测试，真实复制、同名冲突、部分失败及恢复不能由编译或预览代替验证，交付时须明确当次实际覆盖范围。
-- **隐私与发布**：日志、路径清单和截图可能包含账户名及真实文件名，公开前必须脱敏。本地发布产物和临时验证资料不得因交付文档更新而被擅自上传或发布。

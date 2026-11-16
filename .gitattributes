@@ -1,0 +1,8 @@
+# Auto detect text files and normalize line endings
+* text=auto
+
+*.cmd text eol=crlf
+*.ps1 text
+*.md text
+*.png binary
+*.exe binary

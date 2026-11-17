@@ -8,7 +8,7 @@
 - **处理边界**：仅处理六类已知文件夹，不迁移整个用户配置文件、AppData 或其他账户。管理员提升上下文只触发账户核对警告，并不要求使用其他账户凭据运行。
 - **交付形态**：普通用户使用单个 `release/UserDirChanger.exe`；也可将 CMD 与两个 PS1 放在同一目录直接运行。EXE 内嵌启动脚本和迁移引擎，释放到当前用户临时目录中的随机子目录，调用系统 Windows PowerShell 5.1，返回子进程退出码并尽力清理临时目录。
 - **构建方式**：`Build-UserDirChangerExe.ps1` 使用 Windows 自带的 .NET Framework v4 C# 编译器，生成 AnyCPU EXE，不依赖第三方打包工具。EXE 不是脱离 Windows 组件的独立运行时，仍依赖系统 PowerShell。
-- **版本同步**：界面和文档使用带 `v` 的版本显示，C# 程序集版本字段使用不带 `v` 的数值形式。修改版本时须同步 `Start-UserFolderMigration.ps1`、`tools/UserDirChangerLauncher.cs`、README 和本文件，并重建 EXE，否则内嵌脚本和程序集元数据仍是旧版本。
+- **版本同步**：界面和文档使用带 `v` 的版本显示，C# 程序集版本字段使用不带 `v` 的数值形式。修改版本时须同步 `Start-UserFolderMigration.ps1`、`tools/UserDirChangerLauncher.cs`、`README.md` 和 `PROJECT.md`，并重建 EXE，否则内嵌脚本和程序集元数据仍是旧版本。
 
 ## 资料与文件地图
 
@@ -20,7 +20,7 @@
 - `README.md`：面向用户的介绍、准备、源码运行、预览、迁移、合并、日志恢复和限制说明。
 - `docs/images/userdirchanger-preview.png`：README 的预览模式界面截图；本地界面示例及一次性采集工具使用已忽略的 `__ui_demo__/`。原始截图可能包含账户名、真实路径或文件名，公开图片仅使用脱敏示例，原始截图及采集工具不纳入版本控制。
 - `release/UserDirChanger.exe`：本地手动发布的单文件 EXE，位于已忽略的 `release/`；内嵌资源 `UserDirChanger.Start.ps1` 和 `UserDirChanger.Move.ps1` 分别对应 `Start-UserFolderMigration.ps1` 和 `Move-UserFolders.ps1`。当前文件的版本元数据为 `2026.11.16`，两个内嵌脚本与对应源文件的 SHA-256 已静态核对一致；未启动 EXE 或验证真实迁移，源码变化后须重新核对。
-- `.gitignore`：忽略本地测试与比较产物、运行日志、本地发布文件等；忽略规则不等同于清理已有文件。
+- `.gitignore`：忽略 `__ui_demo__/`、本地测试与比较产物、运行日志、本地 `AGENTS.md` 和 `release/`；具体资料与产物见相关条目。
 - `.gitattributes`：规定文本换行及 PNG、EXE 的二进制处理方式，其中 CMD 使用 CRLF。
 
 ## 规则与限制
